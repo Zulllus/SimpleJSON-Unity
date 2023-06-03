@@ -1,10 +1,8 @@
-# SimpleJSON
+# SimpleJSON for Unity
 
 ## Description
 
-This simple JSON parser is developed & maintained by Markus Göbel (Bunny83). 
-It can build a JSON string from the node-tree, or generate a node tree from any 
-valid JSON string.
+This is wrapper around the awesome [SimpleJSON](https://github.com/Bunny83/SimpleJSON) library originally developed by Markus Göbel. This is required for most of my Unity packages. Until there is an official SimpleJSON Unity package, I decided to create this wrapper, so SimpleJSON can be marked as a dependency in my packages. If you have any questions or issues with SimpleJSON, please refer to the [original repository](https://github.com/Bunny83/SimpleJSON).
 
 ## Installation
 
