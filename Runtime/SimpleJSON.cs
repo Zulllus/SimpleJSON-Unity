@@ -531,10 +531,10 @@ namespace SimpleJSON
                 if (tmp == "null")
                     return JSONNull.CreateOrGet();
             }
-            double val;
+            /* double val;
             if (double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out val))
                 return val;
-            else
+            else */
                 return token;
         }
 
