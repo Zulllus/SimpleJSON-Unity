@@ -1,5 +1,9 @@
 # SimpleJSON for Unity
 
+## Предисловие к этой версии
+
+Оригинальный разработчик SimpleJSON очень странный чел. Но, к сожалению, для некоторых задач кроме SimpleJSON в Unity сейчас вообще ничего нет, поэтому приходится его использовать. Поэтому этот форк - решение конкретных проблем для конкретного проекта по реализации JSON. Глобально ничего правится не будет, только исправляться откровенные проблемы и ошибки SimpleJSON. Например, изначально SimpleJSON хранит все числовые типы в Double, что приводит к тому, что Long работает неправильно.
+
 ## Description
 
 This is wrapper around the awesome [SimpleJSON](https://github.com/Bunny83/SimpleJSON) library originally developed by Markus Göbel. This is required for most of my Unity packages. Until there is an official SimpleJSON Unity package, I decided to create this wrapper, so SimpleJSON can be marked as a dependency in my packages. If you have any questions or issues with SimpleJSON, please refer to the [original repository](https://github.com/Bunny83/SimpleJSON).
