@@ -523,19 +523,34 @@ namespace SimpleJSON
         {
             if (quoted)
                 return token;
-            if (token.Length <= 5)
+            
+            string tmp = token.ToLower();
+            if (tmp == "false" || tmp == "true")
+                return tmp == "true";
+            if (tmp == "null")
+                return JSONNull.CreateOrGet();
+            
+            // Сначала пробуем распарсить как long для целых чисел
+            if (token.IndexOf('.') == -1 && token.IndexOf('e') == -1 && token.IndexOf('E') == -1)
             {
-                string tmp = token.ToLower();
-                if (tmp == "false" || tmp == "true")
-                    return tmp == "true";
-                if (tmp == "null")
-                    return JSONNull.CreateOrGet();
+                long longVal;
+                if (long.TryParse(token, NumberStyles.Integer, CultureInfo.InvariantCulture, out longVal))
+                {
+                    // Для очень больших чисел (больше 2^53) сохраняем как строку для точности
+                    if (Math.Abs(longVal) > 9007199254740991L) // 2^53 - 1
+                    {
+                        return new JSONString(token);
+                    }
+                    return new JSONNumber(longVal);
+                }
             }
-            /* double val;
-            if (double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out val))
-                return val;
-            else */
-                return token;
+            
+            // Для дробных чисел используем double
+            double doubleVal;
+            if (double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out doubleVal))
+                return new JSONNumber(doubleVal);
+            
+            return token;
         }
 
         public static JSONNode Parse(string aJSON)
@@ -1432,3 +1447,4 @@ namespace SimpleJSON
         }
     }
 }
+
