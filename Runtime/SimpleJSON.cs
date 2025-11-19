@@ -530,22 +530,26 @@ namespace SimpleJSON
             if (tmp == "null")
                 return JSONNull.CreateOrGet();
             
-            // Сначала пробуем распарсить как long для целых чисел
+            // Проверяем, является ли токен целым числом (без точки и экспоненты)
             if (token.IndexOf('.') == -1 && token.IndexOf('e') == -1 && token.IndexOf('E') == -1)
             {
-                long longVal;
-                if (long.TryParse(token, NumberStyles.Integer, CultureInfo.InvariantCulture, out longVal))
+                if (long.TryParse(token, NumberStyles.Integer, CultureInfo.InvariantCulture, out var longVal))
                 {
-                    // Для очень больших чисел (больше 2^53) сохраняем как строку для точности
-                    if (Math.Abs(longVal) > 9007199254740991L) // 2^53 - 1
+                    // 2^53 = 9,007,199,254,740,992 - максимальное целое число, которое double может представить точно
+                    // Наверное будет гллючить при ulong
+                    // Или если включен флаг longAsString и число не влезает в +uint -int - то это лонг и делаем его строкой
+                    if ((JSONNode.longAsString && (longVal > uint.MaxValue || longVal < int.MinValue))||(Math.Abs(longVal) > 9007199254740991L))
                     {
-                        return new JSONString(token);
+                        return token;
                     }
-                    return new JSONNumber(longVal);
+                    else
+                    {
+                        return new JSONNumber(longVal);
+                    }
                 }
             }
             
-            // Для дробных чисел используем double
+            // Для остальных чисел используем обычный парсинг
             double doubleVal;
             if (double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out doubleVal))
                 return new JSONNumber(doubleVal);
@@ -1447,4 +1451,5 @@ namespace SimpleJSON
         }
     }
 }
+
 
